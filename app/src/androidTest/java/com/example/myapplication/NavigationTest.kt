@@ -109,6 +109,6 @@ class NavigationTest {
     private fun pressBackFromFirst() {
         pressBackUnconditionally() // avoid Exception
         // In other cases state would be RESUMED
-        assertEquals(Lifecycle.State.STARTED, scenario.state)
+        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
     }
 }
