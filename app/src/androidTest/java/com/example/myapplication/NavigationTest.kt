@@ -18,17 +18,31 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class NavigationTest {
 
+    lateinit var scenario: ActivityScenario<MainActivity>
+
     @Test
     fun testAbout() {
-        launchActivity<MainActivity>()
+        scenario = launchActivity()
         openAbout()
         idIsDisplayed(R.id.activity_about)
 
         pressBack()
         idIsDisplayed(R.id.activity_main)
+        scenario.recreate()
+        idIsDisplayed(R.id.activity_main)
+        pressBackFromFirst()
+
+        val aboutScenario = launchActivity<AboutActivity>()
+        idIsDisplayed(R.id.activity_about)
+        aboutScenario.recreate()
+        idIsDisplayed(R.id.activity_about)
     }
 
-    lateinit var scenario: ActivityScenario<MainActivity>
+    private fun aboutIsAbsolutelyDisplayed() {
+        idIsDisplayed(R.id.activity_about)
+        scenario.recreate()
+        idIsDisplayed(R.id.activity_about)
+    }
 
     @Test
     fun testBackStack() {
