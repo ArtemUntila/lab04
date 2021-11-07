@@ -24,24 +24,18 @@ class NavigationTest {
     fun testAbout() {
         scenario = launchActivity()
         openAbout()
-        idIsDisplayed(R.id.activity_about)
+        aboutIsDisplayed()
 
         pressBack()
-        idIsDisplayed(R.id.activity_main)
+        mainIsDisplayed()
         scenario.recreate()
-        idIsDisplayed(R.id.activity_main)
+        mainIsDisplayed()
         pressBackFromFirst()
 
         val aboutScenario = launchActivity<AboutActivity>()
-        idIsDisplayed(R.id.activity_about)
+        aboutIsDisplayed()
         aboutScenario.recreate()
-        idIsDisplayed(R.id.activity_about)
-    }
-
-    private fun aboutIsAbsolutelyDisplayed() {
-        idIsDisplayed(R.id.activity_about)
-        scenario.recreate()
-        idIsDisplayed(R.id.activity_about)
+        aboutIsDisplayed()
     }
 
     @Test
@@ -65,7 +59,7 @@ class NavigationTest {
         scenario = launchActivity()
 
         //Third
-        toThirdDirectly()
+        fromFirstToThird()
         pressBack()
         secondIsAbsolutelyDisplayed()
 
@@ -74,7 +68,7 @@ class NavigationTest {
         pressBack()
         firstIsAbsolutelyDisplayed()
 
-        toThirdDirectly()
+        fromFirstToThird()
         toFirst()
         pressBackFromFirst()
     }
@@ -91,15 +85,78 @@ class NavigationTest {
         //Second
         toFirst()
         firstIsAbsolutelyDisplayed()
-        toThirdDirectly() //: toSecond() -> toThird()
+        fromFirstToThird() //: toSecond() -> toThird()
         thirdIsAbsolutelyDisplayed()
 
         //Third
         toFirst()
         firstIsAbsolutelyDisplayed()
-        toThirdDirectly()
+        fromFirstToThird()
         toSecond()
         secondIsAbsolutelyDisplayed()
+    }
+
+    @Test
+    fun testAboutNavigation() {
+        scenario = launchActivity()
+
+        //With default back button
+        //First
+        openAbout()
+        aboutIsDisplayed()
+        pressBack()
+        firstIsAbsolutelyDisplayed()
+        pressBackFromFirst()
+
+        scenario = launchActivity()
+
+        //Second
+        toSecond()
+        openAbout()
+        aboutIsDisplayed()
+        pressBack()
+        secondIsAbsolutelyDisplayed()
+        pressBack()
+        firstIsDisplayed()
+
+        //Third
+        fromFirstToThird()
+        openAbout()
+        aboutIsDisplayed()
+        pressBack()
+        thirdIsAbsolutelyDisplayed()
+        pressBack()
+        secondIsDisplayed()
+    }
+
+    @Test
+    fun testActionBarNavigation() {
+        scenario = launchActivity()
+
+        //First
+        openAbout()
+        pressBackFromActionBar()
+        firstIsAbsolutelyDisplayed()
+
+        //Second
+        toSecond()
+        openAbout()
+        pressBackFromActionBar()
+        secondIsAbsolutelyDisplayed()
+        pressBackFromActionBar()
+        firstIsAbsolutelyDisplayed()
+        pressBackFromFirst()
+
+        scenario = launchActivity()
+
+        //Third
+        fromFirstToThird()
+        openAbout()
+        pressBackFromActionBar()
+        thirdIsAbsolutelyDisplayed()
+        toSecond()
+        pressBackFromActionBar()
+        firstIsAbsolutelyDisplayed()
     }
 
     private fun firstIsAbsolutelyDisplayed() {
@@ -123,6 +180,7 @@ class NavigationTest {
     private fun pressBackFromFirst() {
         pressBackUnconditionally() // avoid Exception
         // In other cases state would be RESUMED
+        Thread.sleep(1000)
         assertEquals(Lifecycle.State.DESTROYED, scenario.state)
     }
 }

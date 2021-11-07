@@ -36,7 +36,7 @@ class FragmentContentTest {
 
     @Test
     fun thirdContentTest() {
-        toThirdDirectly()
+        fromFirstToThird()
         activity.scenario.onActivity {
             assertNotNull(it.findViewById(R.id.bnToFirst))
             assertNotNull(it.findViewById(R.id.bnToSecond))

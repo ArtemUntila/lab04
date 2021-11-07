@@ -32,4 +32,4 @@ private fun openAboutViaOptions() {
         .perform(click())
 }
 
-fun openAbout() = openAboutViaDrawer()
+fun openAbout() = openAboutViaBottomNav()
